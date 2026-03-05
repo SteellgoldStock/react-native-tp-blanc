@@ -1,18 +1,38 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { ImageStyle, StyleSheet, StyleSheetProperties, Text, TextStyle, TouchableOpacity, ViewStyle } from 'react-native'
 
 type ButtonProps = {
   text: string;
   onPress: () => {};
-  secondary?: boolean;
+  variant?: "default" | "secondary" | "selected";
 }
 
-export const Button = ({ text, onPress, secondary = false }: ButtonProps) => {
+const getVariant = (type: ButtonProps["variant"]) => {
+  if (type == "default") {
+    return {
+      backgroundColor: 'purple',
+      borderColor: 'purple'
+    }
+  } else if (type == "secondary") {
+    return {
+      borderColor: 'lightgray'
+    }
+  } else if (type == "selected") {
+    return {
+      backgroundColor: "#80008030",
+      borderColor: '#d3d3d330'
+    }
+  }
+
+  
+}
+
+export const Button = ({ text, onPress, variant = "default" }: ButtonProps) => {
   return (
     <TouchableOpacity
-      style={[styles.button, secondary ? styles.buttonSecondary : styles.buttonPrimary]}
+      style={[styles.button, getVariant(variant)]}
       onPress={onPress}
     >
-      <Text style={[styles.buttonText, secondary ? styles.buttonTextSecondary : styles.buttonTextPrimary]}>{text}</Text>
+      <Text style={[styles.buttonText, getVariant(variant)]}>{text}</Text>
     </TouchableOpacity>
   )
 }
@@ -25,13 +45,6 @@ const styles = StyleSheet.create({
     marginTop: 25,
     padding: 10,
     width: '100%'
-  },
-  buttonPrimary: {
-    backgroundColor: 'purple',
-    borderColor: 'purple'
-  },
-  buttonSecondary: {
-    borderColor: 'lightgray'
   },
   buttonText: {
     fontWeight: 'bold',

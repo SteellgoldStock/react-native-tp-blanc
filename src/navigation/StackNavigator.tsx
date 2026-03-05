@@ -5,8 +5,8 @@ import { ResultScreen } from '../screens/ResultScreen';
 
 export type RootStackParamList = {
   HomeScreen: undefined;
-  QuestionScreen: undefined;
-  ResultScreen: undefined;  
+  QuestionScreen: { name: string };
+  ResultScreen: { name: string };  
 }
 
 const Stack = createNativeStackNavigator<RootStackParamList>();

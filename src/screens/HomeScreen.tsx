@@ -10,7 +10,7 @@ type Props = NativeStackScreenProps<RootStackParamList, "HomeScreen">;
 
 export const WelcomeScreen = ({ navigation }: Props) => {
   const { fetchPlayer } = usePlayer();
-  const [name, setName] = useState<string>()
+  const [name, setName] = useState<string>("John")
 
   return (
     <ScreenWrapper>
@@ -26,7 +26,10 @@ export const WelcomeScreen = ({ navigation }: Props) => {
       <Button
         text="Jouer !"
         onPress={async() => {
-          fetchPlayer(name);
+          // const tcc = await fetchPlayer(name || "a");
+          // console.log(tcc);
+
+          navigation.navigate("QuestionScreen", { name: name })
         }}
       />
     </ScreenWrapper>

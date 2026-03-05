@@ -1,5 +1,5 @@
 import { SQLiteDatabase } from "expo-sqlite"
-import { Player, Error } from "../types/player"
+import { Player } from "../types/player"
 
 export async function migrateDbIfNeeded(db: any) {
   let { user_version: currentDbVersion } = await db.getFirstAsync('PRAGMA user_version')
@@ -32,21 +32,24 @@ export async function getPlayer(db: SQLiteDatabase, name: string): Promise<Playe
 }
 
 export async function insertUser(db: SQLiteDatabase, name: string): Promise<Player> {
+  console.log("1")
   const isFound = await db.getFirstAsync<Player>('SELECT id FROM players WHERE name = ?', [name])
+  if (isFound) throw new Error('Joueur déjà existant.');
 
-  if (isFound) {
-    throw new Error('Joueur déjà existant.');
-  }
-
+  console.log("2")
   const result = await db.runAsync('INSERT INTO players (name, points) VALUES (?, ?);', [name, 0])
+  console.log(result)
 
+  console.log("3")
   if (!result.lastInsertRowId) {
     throw new Error("Une erreur est survenue lors de la création de votre joueur")
   }
 
+  console.log("4")
   const player = await db.getFirstAsync<Player>('SELECT * FROM players WHERE name = ?', [name]);
   if (player !== null) return player;
 
+  console.log("5")
   throw new Error("Joueur introuvable");
 }
 
